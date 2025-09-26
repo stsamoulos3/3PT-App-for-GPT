@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Food" ADD COLUMN     "addedSugar" DOUBLE PRECISION,
+ADD COLUMN     "transFat" DOUBLE PRECISION,
+ADD COLUMN     "vitaminD" DOUBLE PRECISION;

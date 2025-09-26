@@ -1,0 +1,54 @@
+{
+	"name": "@repo/backend",
+	"version": "0.0.0",
+	"private": true,
+	"exports": {
+		".": {
+			"import": {
+				"default": "./dist/hc.js",
+				"types": "./dist/hc.d.ts"
+			}
+		}
+	},
+	"scripts": {
+		"dev": "bun run --hot src/index.ts",
+		"build": "tsc -p tsconfig.build.json",
+		"build:watch": "tsc -p tsconfig.build.json --watch",
+		"prisma:generate": "bunx prisma generate",
+		"prisma:migrate": "bunx prisma migrate dev",
+		"migrate:data": "bun run src/scripts/migrate-data.ts",
+		"check:email": "bun run src/scripts/check-email-config.ts",
+		"create-admin": "bun run src/scripts/create-admin.ts",
+		"check": "tsc --noEmit",
+		"postinstall": "bun run prisma:generate"
+	},
+	"dependencies": {
+		"@aws-sdk/client-s3": "^3.848.0",
+		"@aws-sdk/s3-request-presigner": "^3.848.0",
+		"@highlight-run/hono": "^1.0.4",
+		"@hono/swagger-ui": "^0.4.1",
+		"@hono/zod-openapi": "^0.16.4",
+		"@influxdata/influxdb-client": "^1.35.0",
+		"@prisma/client": "^6.6.0",
+		"@scalar/hono-api-reference": "^0.5.156",
+		"@types/multer": "^1.4.12",
+		"@types/nodemailer": "^6.4.17",
+		"axios": "^1.8.4",
+		"cloudinary": "^2.5.1",
+		"hono": "^4.6.4",
+		"mongodb": "^6.11.0",
+		"multer": "^1.4.5-lts.1",
+		"nodemailer": "^7.0.3",
+		"papaparse": "^5.5.3",
+		"pg": "^8.13.3",
+		"zod": "^3.23.8"
+	},
+	"devDependencies": {
+		"@repo/eslint-config": "*",
+		"@repo/typescript-config": "*",
+		"@types/bun": "latest",
+		"@types/papaparse": "^5.3.16",
+		"prisma": "^6.6.0",
+		"prisma-dbml-generator": "^0.12.0"
+	}
+}

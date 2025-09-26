@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Initialize variables
+target_bucket="dev-bmp"
+timestamp=$(date +"%s_%d-%B-%Y_%A@%H%M")
+backup_tmp="/tmp/$(< /dev/urandom tr -dc "[:alnum:]" | head -c10)"
+backup_tar_file="influxdb_backup_$timestamp.tar.gz"
+backup_tar_path="/tmp/"
+bucket="prod"
+op_token="SdDS52XLzJkgIf8o8mKwgjYaVQv4v6SezINjbmfqPyT4g7BG58W8HiOHxsFnxM5jAXkedU5AA9PKE2bODk5_2A=="
+retention_days=7  # Set retention period for old backups (in days)
+
+if [ -z "$target_bucket" ]; then
+  echo "Argument containing target S3 bucket path must be passed. Exiting."
+  exit 0
+fi
+
+# Check for AWS CLI
+command -v aws >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "AWS CLI not installed. Exiting."
+  exit 0
+fi
+
+echo "$(date +"%d-%B-%Y@%H:%M:%S") - Starting backups."
+
+# Backup Metastore
+rm -rf $backup_tmp
+mkdir -p $backup_tmp
+influx backup $backup_tmp/metastore --token $op_token
+
+# Backup "prod" database
+echo "$(date +"%d-%B-%Y@%H:%M:%S") - Backing up database $bucket to $backup_tmp/$bucket."
+influx backup --bucket $bucket $backup_tmp/$bucket --token $op_token
+
+# Create archive and upload to S3
+echo "$(date +"%d-%B-%Y@%H:%M:%S") - Creating archive /tmp/influxdb_backup_$timestamp."
+cd $backup_tmp
+tar cvzf $backup_tar_path$backup_tar_file .
+echo "$(date +"%d-%B-%Y@%H:%M:%S") - Uploading to S3."
+aws s3 cp $backup_tar_path$backup_tar_file s3://$target_bucket/influx-backup/$backup_tar_file
+
+# Cleanup old backups in S3
+echo "$(date +"%d-%B-%Y@%H:%M:%S") - Cleaning up old backups in S3 older than $retention_days days."
+aws s3 ls s3://$target_bucket/influx-backup/ | while read -r line; do
+  file_date=$(echo $line | awk '{print $1" "$2}')
+  file_name=$(echo $line | awk '{print $4}')
+  if [[ $file_name == "influxdb_backup_"*".tar.gz" ]]; then
+    file_timestamp=$(date -d "$file_date" +%s)
+    retention_timestamp=$(date -d "-$retention_days days" +%s)
+    if [ $file_timestamp -lt $retention_timestamp ]; then
+      echo "$(date +"%d-%B-%Y@%H:%M:%S") - Deleting old backup: $file_name"
+      aws s3 rm s3://$target_bucket/influx-backup/$file_name
+    fi
+  fi
+done
+
+# Cleanup temporary files
+echo "$(date +"%d-%B-%Y@%H:%M:%S") - Cleaning up local temporary files."
+rm -rf $backup_tmp
+rm -f $backup_tar_path$backup_tar_file  # Remove the tar file from /tmp
+
+echo "$(date +"%d-%B-%Y@%H:%M:%S") - All done."

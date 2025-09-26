@@ -1,0 +1,19 @@
+[0;1;31m×[0m caddy.service - Caddy
+     Loaded: loaded (]8;;file://ip-172-31-14-235/usr/lib/systemd/system/caddy.service/usr/lib/systemd/system/caddy.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;31mfailed[0m (Result: exit-code) since Mon 2025-08-11 08:24:03 UTC; 27min ago
+       Docs: ]8;;https://caddyserver.com/docs/https://caddyserver.com/docs/]8;;
+    Process: 611 ExecStart=/usr/bin/caddy run --environ --config /etc/caddy/Caddyfile [0;1;31m(code=exited, status=1/FAILURE)[0m
+   Main PID: 611 (code=exited, status=1/FAILURE)
+     Status: "[0;1;36mloading new config: http app module: start: listening on :80: listen tcp :80: bind: address already in use[0m"
+        CPU: 934ms
+
+Aug 11 08:24:03 ip-172-31-14-235 caddy[611]: {"level":"info","ts":1754900643.661738,"msg":"using config from file","file":"/etc/caddy/Caddyfile"}
+Aug 11 08:24:03 ip-172-31-14-235 caddy[611]: {"level":"info","ts":1754900643.738298,"msg":"adapted config to JSON","adapter":"caddyfile"}
+Aug 11 08:24:03 ip-172-31-14-235 caddy[611]: {"level":"info","ts":1754900643.740242,"logger":"admin","msg":"admin endpoint started","address":"localhost:2019","enforce_origin":false,"origins":["//localhost:2019","//[::1]:2019","//127.0.0.1:2019"]}
+Aug 11 08:24:03 ip-172-31-14-235 caddy[611]: {"level":"info","ts":1754900643.740685,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0xc00035ec80"}
+Aug 11 08:24:03 ip-172-31-14-235 caddy[611]: {"level":"warn","ts":1754900643.7423623,"logger":"http.auto_https","msg":"server is listening only on the HTTP port, so no automatic HTTPS will be applied to this server","server_name":"srv0","http_port":80}
+Aug 11 08:24:03 ip-172-31-14-235 caddy[611]: {"level":"info","ts":1754900643.7449186,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0xc00035ec80"}
+Aug 11 08:24:03 ip-172-31-14-235 caddy[611]: Error: loading initial config: loading new config: http app module: start: listening on :80: listen tcp :80: bind: address already in use
+Aug 11 08:24:03 ip-172-31-14-235 systemd[1]: [0;1;39m[0;1;31m[0;1;39mcaddy.service: Main process exited, code=exited, status=1/FAILURE[0m
+Aug 11 08:24:03 ip-172-31-14-235 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcaddy.service: Failed with result 'exit-code'.[0m
+Aug 11 08:24:03 ip-172-31-14-235 systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start caddy.service - Caddy.[0m

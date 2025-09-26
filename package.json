@@ -1,0 +1,33 @@
+{
+  "name": "health-app",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "ui": "bun run --cwd packages/ui ui",
+    "postinstall": "patch-package",
+    "run:apk": "bun run --cwd apps/mobile-app start",
+    "run:apk:ios": "bun run --cwd apps/mobile-app ios"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^2.1.3",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "bun@1.1.27",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "trustedDependencies": [
+    "@gluestack-ui/nativewind-utils",
+    "@prisma/client",
+    "core-js",
+    "core-js-pure"
+  ]
+}

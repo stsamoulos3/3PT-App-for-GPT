@@ -1,0 +1,274 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum CalorieCountingMethod {
+  MODEL1
+  MODEL2
+  MODEL3
+  MODEL4
+}
+
+model User {
+  id                         String                 @id @default(uuid())
+  first_name                 String
+  last_name                  String
+  email                      String                 @unique
+  dob                        DateTime?
+  gender                     String?
+  password                   String
+  role                       UserRole               @default(USER)
+  is3PTPatient               Boolean?
+  patientId                  String?
+  isMultidisciplinaryPatient Boolean?
+  rmr                        Float?
+  prescribedExerciseHR       Float?
+  hourlyCaloriesAtHR         Float?
+  prescribedDailyCalories    Float?
+  vo2Max                     Float?
+  user_agreement             String?
+  calorieCountingMethod      CalorieCountingMethod? @default(MODEL1)
+
+  // Password reset fields
+  resetToken       String?
+  resetTokenExpiry DateTime?
+
+  // Email verification fields
+  emailVerified          Boolean @default(false)
+  emailVerificationToken String?
+
+  // Streak tracking fields
+  currentWorkoutStreak Int       @default(0)
+  longestWorkoutStreak Int       @default(0)
+  currentFoodStreak    Int       @default(0)
+  longestFoodStreak    Int       @default(0)
+  lastWorkoutDate      DateTime?
+  lastFoodLogDate      DateTime?
+  lastActiveAt         DateTime  @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  workouts   Workout[]
+  nutritions Nutrition[]
+  Food       Food[]
+  FoodLog    FoodLog[]
+  userFiles  UserFile[]
+  vo2Profile UserCalProfile?
+}
+
+model Workout {
+  id                     String    @id @default(uuid())
+  userId                 String
+  activityType           String
+  startDate              DateTime
+  endDate                DateTime
+  totalDistanceMeters    Float
+  totalEnergyBurnedKcal  Float
+  workoutDurationSeconds Int
+  averageHeartRateBPM    Float?
+  firstHeartRateTime     DateTime?
+  lastHeartRateTime      DateTime?
+  highestHeartRate       Float?
+  lowestHeartRate        Float?
+  hkId                   String?
+  source                 String?
+  isDeleted              Boolean   @default(false)
+  deletedAt              DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  MODEL1                 Float?
+  MODEL2                 Float?
+  MODEL3                 Float?
+  MODEL4                 Float?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+
+  // unique constraint on userId and hkId
+  @@unique([userId, hkId])
+}
+
+// model Steps {
+//   id         String   @id @default(uuid())
+//   workoutId  String?
+//   userId     String
+//   timestamp  DateTime @unique
+//   stepsCount Int
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+
+//   // Relations
+//   user    User     @relation(fields: [userId], references: [id])
+//   workout Workout? @relation(fields: [workoutId], references: [id])
+// }
+
+model Nutrition {
+  id           String   @id @default(uuid())
+  userId       String
+  date         DateTime
+  hkId         String
+  quantity     Float
+  quantityType String
+  quantityUnit String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+
+  // unique constraint on userId and hkId
+  @@unique([userId, hkId])
+}
+
+// model BodyMeasurement {
+//   id               String   @id @default(uuid())
+//   userId           String
+//   measurementType  String
+//   measurementValue Float
+//   measurementUnit  String
+//   timestamp        DateTime
+//   createdAt        DateTime @default(now())
+//   updatedAt        DateTime @updatedAt
+
+//   // Relations
+//   user User @relation(fields: [userId], references: [id])
+// }
+
+// model VitalSigns {
+//   id         String   @id @default(uuid())
+//   userId     String
+//   vitalType  String
+//   vitalValue Float
+//   vitalUnit  String
+//   timestamp  DateTime
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+
+//   // Relations
+//   user User @relation(fields: [userId], references: [id])
+// }
+
+model Food {
+  id          String   @id @default(uuid())
+  foodName    String
+  brandName   String?
+  serving     String
+  servingSize String?
+  userId      String? // If null, it's a system food
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Nutrition facts
+  calories           Float
+  totalFat           Float?
+  saturatedFat       Float?
+  polyunsaturatedFat Float?
+  monounsaturatedFat Float?
+  transFat           Float?
+  cholesterol        Float?
+  sodium             Float?
+  totalCarbohydrates Float?
+  dietaryFiber       Float?
+  sugars             Float?
+  addedSugar         Float?
+  protein            Float?
+  calcium            Float?
+  iron               Float?
+  potassium          Float?
+  vitaminA           Float?
+  vitaminC           Float?
+  vitaminD           Float?
+  caffeine           Float?
+  copper             Float?
+  manganese          Float?
+  niacin             Float?
+  pantothenicAcid    Float?
+  phosphorus         Float?
+  selenium           Float?
+  thiamin            Float?
+  vitaminB6          Float?
+  vitaminB12         Float?
+  vitaminE           Float?
+  vitaminK           Float?
+  water              Float?
+  zinc               Float?
+  // Relations
+  user               User?     @relation(fields: [userId], references: [id])
+  foodLogs           FoodLog[]
+  synced             Boolean   @default(false)
+  nixId              String?   @unique
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+}
+
+model FoodLog {
+  id          String   @id @default(uuid())
+  userId      String
+  foodId      String
+  date        DateTime
+  servings    Float
+  servingSize String
+  meal        MealType
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+  food Food @relation(fields: [foodId], references: [id])
+}
+
+model UserFile {
+  id          String   @id @default(uuid())
+  userId      String
+  fileName    String
+  filePath    String
+  fileSize    Int
+  mimeType    String
+  uploadedBy  String // Admin ID who uploaded the file
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+}
+
+model UserCalProfile {
+  id                       String @id @default(uuid())
+  userId                   String @unique
+  estimatedVo2Max          Float // Maximum VO2 from PNOE data
+  vo2EfficiencyCoefficient Float // Regression coefficient for HR->VO2 estimation
+  restingMetabolicRate     Float? // RMR calculated from lowest values
+  hrVo2Slope               Float? // Linear relationship slope
+  hrVo2Intercept           Float? // Linear relationship intercept
+  hrRerSlope               Float? // HR->RER regression slope for Weir equation
+  hrRerIntercept           Float? // HR->RER regression intercept for Weir equation
+  hrEeSlope                Float? // HR->EE regression slope
+  hrEeIntercept            Float? // HR->EE regression intercept
+  o2RerSlope               Float? // O2 -> RER regression slope
+  o2RerIntercept           Float? // O2 -> RER regression intercept
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+}

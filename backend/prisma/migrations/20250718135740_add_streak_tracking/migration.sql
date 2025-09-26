@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "currentFoodStreak" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "currentWorkoutStreak" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "lastActiveAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "lastFoodLogDate" TIMESTAMP(3),
+ADD COLUMN     "lastWorkoutDate" TIMESTAMP(3),
+ADD COLUMN     "longestFoodStreak" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "longestWorkoutStreak" INTEGER NOT NULL DEFAULT 0;

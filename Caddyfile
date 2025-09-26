@@ -1,0 +1,7 @@
+3pt.urbanoinfotech.com {
+	reverse_proxy 0.0.0.0:4000 #localhost:2998
+}
+
+3pthealthcare.com www.3pthealthcare.com {
+	reverse_proxy 0.0.0.0:3010
+}
