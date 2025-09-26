@@ -1,92 +1,88 @@
-## Project Structure
+# AutoBroZ Mobile App 👋
 
-This monorepo includes the following packages and apps:
+A React Native mobile application built with Expo for managing auto services and maintenance.
 
-### Apps
+## Features
 
-<!-- - `web`: A Next.js web application -->
-- `mobile-app`: A cross-platform mobile application
-- `backend`: A backend server application
-
-### Packages
-
-<!-- - `@repo/ui`: A shared React component library used across web and mobile applications -->
-- `@repo/core`: Core business logic and shared utilities
-- `@repo/typescript-config`: Shared TypeScript configurations
-- `@repo/eslint-config`: Shared ESLint configurations
+- Authentication system
+- Vehicle and customer management
+- Dark/Light mode support
+- Custom UI components using Gluestack UI
+- File-based routing with Expo Router
 
 ## Tech Stack
 
-- [Turborepo](https://turbo.build/repo) for monorepo management
-- [TypeScript](https://www.typescriptlang.org/) for type safety
-- [Bun](https://bun.sh/) as the package manager
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+- React Native with Expo
+- TypeScript
+- Gluestack UI for components
+- NativeWind (Tailwind CSS for React Native)
+- Zustand for state management
+- React Query for data fetching
+- Expo Router for navigation
+- AsyncStorage for local storage
 
 ## Getting Started
 
-### Prerequisites
+1. Install dependencies:
 
-- Node.js >= 18
-- Bun >= 1.1.27
-
-### Installation
-
-```sh
-# Clone the repository
-git clone [repository-url]
-
-# Install dependencies
+```bash
 bun install
 ```
 
-### Development
+2. Start the development server:
 
-To develop all apps and packages:
-
-```sh
-bun run dev
+```bash
+bun expo start
 ```
 
-### Build
+You can run the app on:
+- iOS Simulator
+- Android Emulator
+- Physical device using Expo Go
+- Web browser
 
-To build all apps and packages:
+## Development
 
-```sh
-bun run build
+### Project Structure
+
+- `/src/app` - Application screens and routing
+- `/src/components` - Reusable UI components
+- `/src/store` - State management with Zustand
+- `/src/hooks` - Custom React hooks
+- `/src/assets` - Images and other static assets
+
+### Environment Setup
+
+Make sure you have the following installed:
+- Node.js
+- Bun
+- iOS Simulator (for Mac users)
+- Android Studio & Android Emulator
+- Expo CLI (`bun install -g expo-cli`)
+
+### Available Scripts
+
+```bash
+bun run android    # Run on Android
+bun run ios        # Run on iOS
+bun run lint       # Run linter
 ```
 
-### UI Development
+## Building for Production
 
-To work on the UI components:
+To create a production build:
 
-```sh
-bun run ui
+```bash
+bun run build:preview    # Build Android preview
+bun run update:preview   # Update preview build
 ```
 
-## Project Scripts
+## Learn More
 
-- `bun run dev`: Start development mode
-- `bun run build`: Build all applications
-- `bun run lint`: Lint all code
-- `bun run ui`: Start UI development environment
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native Documentation](https://reactnative.dev/)
+- [Gluestack UI Documentation](https://ui.gluestack.io/)
 
-## Remote Caching
+## License
 
-This project supports Turborepo's Remote Caching feature. To enable it:
-
-1. Create a [Vercel account](https://vercel.com/signup)
-2. Login to Turborepo CLI:
-   ```sh
-   npx turbo login
-   ```
-3. Link your project to Remote Cache:
-   ```sh
-   npx turbo link
-   ```
-
-## Useful Links
-
-- [Turborepo Documentation](https://turbo.build/repo/docs)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-- [Bun Documentation](https://bun.sh/docs)
+This project is private and proprietary software.

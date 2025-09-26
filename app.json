@@ -1,0 +1,86 @@
+{
+	"expo": {
+		"name": "3PT Health",
+		"slug": "threepthealthcare",
+		"version": "1.0.7",
+		"orientation": "portrait",
+		"icon": "./src/assets/images/icon.png",
+		"scheme": "threepthealthcare",
+		"userInterfaceStyle": "automatic",
+		"newArchEnabled": false,
+		"splash": {
+			"image": "./src/assets/images/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.3pthealthcare.app",
+			"runtimeVersion": {
+				"policy": "appVersion"
+			},
+			"appleTeamId": "65UPJJLK9K",
+			"associatedDomains": ["applinks:3pthealthcare.com"],
+			"infoPlist": {
+				"ITSAppUsesNonExemptEncryption": false
+			}
+		},
+		"plugins": [
+			"expo-router",
+			[
+				"@kingstinct/react-native-healthkit",
+				{
+					"NSHealthShareUsageDescription": "Allow ${PRODUCT_NAME} to access your health data to track your activity",
+					"NSHealthUpdateUsageDescription": "Allow ${PRODUCT_NAME} to update your health data",
+					"background": true
+				}
+			],
+			[
+				"expo-font",
+				{
+					"fonts": [
+						"../../node_modules/@expo-google-fonts/lato/Lato_400Regular.ttf",
+						"../../node_modules/@expo-google-fonts/lato/Lato_400Regular.ttf"
+					]
+				}
+			],
+			[
+				"expo-notifications",
+				{
+					"color": "#ffffff",
+					"defaultChannel": "default",
+					"enableBackgroundRemoteNotifications": true
+				}
+			],
+			[
+				"expo-camera",
+				{
+					"cameraPermission": "Allow ${PRODUCT_NAME} camera access to scan barcodes"
+				}
+			]
+		],
+		"experiments": {
+			"typedRoutes": true
+		},
+		"extra": {
+			"eas": {
+				"projectId": "99a4a9d2-28d9-4732-9cbf-589c4a630495"
+			}
+		},
+		"owner": "urbano_infotech",
+		"updates": {
+			"url": "https://u.expo.dev/99a4a9d2-28d9-4732-9cbf-589c4a630495"
+		},
+		"runtimeVersion": {
+			"policy": "appVersion"
+		},
+		"android": {
+			"permissions": [
+				"android.permission.CAMERA",
+				"android.permission.RECORD_AUDIO"
+			],
+			"package": "com.x3pthealthcare.app"
+		}
+	},
+	"name": "mobile-app"
+}

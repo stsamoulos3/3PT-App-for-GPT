@@ -1,0 +1,16 @@
+{
+  "build": {
+    "preview": {
+      "channel": "preview",
+      "distribution": "internal",
+      "env": {}
+    },
+    "production": {
+      "channel": "production",
+      "distribution": "store",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://3pt.urbanoinfotech.com/"
+      }
+    }
+  }
+}
